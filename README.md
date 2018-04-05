@@ -14,6 +14,10 @@ Sitio de prueba con muchos archivos y directorios
 
 Puede deployarse en cualquier parte, local o remota
 
+##Contribute
+
+Por favor, fork este repositorio y haga pull requests para revisar
+
 ## Copyright
 
 2018 Acme
