@@ -8,4 +8,8 @@ Just an introduction
 
 ## Purpose
 
-Sample website with plenty of files for demos
+Sitio de prueba con muchos archivos y directorios
+
+## Deployment
+
+Puede deployarse en cualquier parte, local o remota
