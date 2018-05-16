@@ -20,7 +20,7 @@ Para que las actualizaciones en los valores de las constantes sean tenidas en cu
 
 ## Request [ GET | POST ]
 
-La llamada siempre tendrá la forma **`BASE_URL/Provisioning`**.
+La llamada siempre tendrá la forma **`http://BASE_URL/Provisioning`**.
 
 * El parámetro **`function`** es obligatorio e identifica la llamada a realizar.
 * Opcionalmente podrán agregarse N parámetros opcionales identificados por la cadena **`p[0-N]`**.
@@ -36,7 +36,35 @@ El código HTTP retornado como respuesta a un request bien formado será siempre
 La única excepción la constituye el código **`500`**, con el contenido **`Internal server error`** seguido de una o más
 excepciones.
 
-Los posibles *códigos APP* se muestran en la tabla siguiente:
+El número y contenido de los mensajes dependerá de la llamada específica y su resultado.
+
+>Un *request / response* típico:
+<br>`http://192.168.128.216:8080/mfsjava/Provisioning?function=getAppVersion`
+<br> **`0`**`|1.3.1`
+
+## LLamadas (métodos)
+
+Las llamadas o métodos son identificados por el parámetro **function** del request. El sistema es *"case sensitive"* tanto
+para los nombres como los valores de los parámetros.
+
+Muestra de requests mal formados y sus respectivas respuestas:
+
+* `BASE_URL/Provisioning?funtion=getAppVersion  ->` **`1`**`|null not recognized`
+<br>"funtion" no es "function"
+* `BASE_URL/Provisioning?FUNCTION=getAppVersion ->` **`1`**`|null not recognized`
+<br>"FUNCTION" no es "function"
+* `BASE_URL/Provisioning?function=getVersion    ->` **`1`**`|getVersion not recognized`
+<br>"getVersion" no es método
+
+El API está dividido en dos grandes grupos funcionales, diferenciados únicamente por la presencia del IMEI en el encabezado
+del request.
+
+### Grupo de llamadas TigoMoney
+
+*Todos los requests de este grupo deben tener el encabezado HTTP `imei=valor_del_imei`*. En caso contrario serán tratados
+como llamadas de mantenimiento e información, generando una excepción debidamente reportada en la respuesta.
+
+Los posibles *códigos APP* en la respuesta se muestran en la tabla siguiente:
 
 Código|Descripción||
 :----:|-----------|-|
@@ -47,34 +75,22 @@ Código|Descripción||
 5|Primer LOGIN|Se indica cambiar la clave del usuario
 6|Mantenimiento|Sistema en ventana de mantenimiento
 
-El número y contenido de los mensajes dependerá de la llamada específica y su resultado.
-
->Un *request / response* típico:
-<br>`http://192.168.128.216:8080/mfsjava/Provisioning?function=getAppVersion`
-<br> **`0`**`|1.3.1`
-
-## LLamadas (métodos)
-
-El API está dividido en dos grandes grupos funcionales, con diferentes condiciones para el acceso.
-
-Las llamadas o métodos son identificados por el parámetro **function** del request. El sistema es *"case sensitive"* tanto
-para los nombres como los valores de los parámetros.
-
-* `BASE_URL/Provisioning?funtion=getAppVersion  ->` **`1`**`|null not recognized`
-<br>"funtion" no es "function"
-* `BASE_URL/Provisioning?FUNCTION=getAppVersion ->` **`1`**`|null not recognized`
-<br>"FUNCTION" no es "function"
-* `BASE_URL/Provisioning?function=getVersion    ->` **`1`**`|getVersion not recognized`
-<br>"getVersion" no es método
-
-### Grupo de llamadas TigoMoney
-
-**Todos los requests de este grupo deben tener el encabezado HTTP `imei=valor_del_imei`**
-
 La funcionalidad de Tigo Money requiere soporte transaccional y para acceder a los métodos definidos en este grupo es
 preciso establecer una sesión en el servidor.
 
-* BASE_URL/Provisioning?funtion=<strong>getSession</strong>
+#### getSession
+* request: BASE_URL/Provisioning?funtion=<strong>getSession</strong>
+* response: 0 ( no hay mensaje )
+<br>En el encabezado HTTP de la respuesta vendrá el header "Set-Cookie". Deberá:
+    1. Guardar el valor de JSESSIONID
+    2. Agregarlo como valor del encabezado "Cookie" en cada uno de los requests subsiguientes.
+  
+![alt text](https://github.com/jrvelascov/starter-web/blob/master/getSessionRequest.png "getSession headers")
+
+
+Set-Cookie: JSESSIONID=48e8aff43cd69e6fe193b6d4d187; Path=/mfsjava; HttpOnly
+
+
 
 ### Grupo de llamadas de mantenimiento e información
 
