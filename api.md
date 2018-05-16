@@ -85,10 +85,10 @@ preciso establecer una sesión en el servidor.
     1. Guardar el valor de JSESSIONID
     2. Agregarlo como valor del encabezado "Cookie" en cada uno de los requests subsiguientes.
   
-![alt text](https://github.com/jrvelascov/starter-web/blob/master/getSessionRequest.png "getSession headers")
+![alt text](http://cirth.radiumtec.com/honnduras/getSessionRequest.png "getSession headers")  
+En la imagen pueden observarse el header **imei** en el request y el header **Set-Cookie** en el response
 
 
-Set-Cookie: JSESSIONID=48e8aff43cd69e6fe193b6d4d187; Path=/mfsjava; HttpOnly
 
 
 
