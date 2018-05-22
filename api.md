@@ -141,10 +141,6 @@ Eventualmente, dependiendo de la respuesta a* **`login`**, *podría ser necesari
 ![alt text](http://cirth.radiumtec.com/honnduras/getSessionRequest.png "getSession headers")  
 En la imagen pueden verse tanto el header **imei** en el request como el header **Set-Cookie** en el response.
 
-><br> *Incluyendo la llamada siguiente,* **`login`**, *TODOS los requests subsiguientes deberán llevar el encabezado*
-**_Cookie_** *con el valor "JSESSIONID=hashquedefineeliddelasesion" además del antedicho encabezado* **_`imei`_**.  
-><br>
-
 #### login - autentica y registra al *CLIENTE* en la sesión
 * request: `BASE_URL/Provisioning?funtion=`<strong>`login`</strong>`&p0=msisdn&p1=pin`  
   Parámetros extra:
