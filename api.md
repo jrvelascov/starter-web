@@ -126,48 +126,4 @@ cashout|SI
 
 En la descripción detallada de los métodos, presentada a continuación, se indicará cuando debe llamarse previamente a `nextId`.
 
-><br> *Los dos métodos siguientes,* **`getSession`** *y* **`login`** *son transacciones de* ***una etapa*** *y conforman el
-protocolo de inicio de sesión.  
-Eventualmente, dependiendo de la respuesta a* **`login`**, *podría ser necesario llamar a* **`getTemplates`** *( de una etapa )*  
-><br>
 
-#### getSession - obtiene el JSESSIONID
-* request: `BASE_URL/Provisioning?funtion=`<strong>`getSession`</strong>
-* response: `0` ( no hay mensaje )  
-  Entre los encabezados HTTP de la respuesta vendrá el header "Set-Cookie". Deberá:
-    1. Extraer y guardar literalmente el string "`JSESSIONID=hashquedefineeliddelasesion`"
-    2. Agregarlo como valor del encabezado "Cookie" en todos los requests subsiguientes.
-  
-![alt text](http://cirth.radiumtec.com/honnduras/getSessionRequest.png "getSession headers")  
-En la imagen pueden verse tanto el header **imei** en el request como el header **Set-Cookie** en el response.
-
-#### login - autentica y registra al *CLIENTE* en la sesión
-* request: `BASE_URL/Provisioning?funtion=`<strong>`login`</strong>`&p0=msisdn&p1=pin`  
-  Parámetros extra:
-    1. **`p0`** : msisdn del agente
-    2. **`p1`** : pin del agente
-* response: una cualquiera de
-    * `0|comentario|opciones.menu<¿>cashinagents.fields<¿>receipt.version<¿>graphic.print|agente`  
-    * `5|comentario|opciones.menu<¿>cashinagents.fields<¿>receipt.version<¿>graphic.print|agente`  
-	  Donde las respuesta **`0`** y **`5`** indican login exitoso, pero en el caso de **`5`** debe hacerse un cambio de clave
-	  usando el método `changePin` antes de continuar.  
-	  El resto de los campos se describe a continuación:
-		 1. **`comentario`** : mensaje proveniente del webservice `ValidatePin`
-		 2. **`opciones.menu`** : listado de las opciones de menú disponibles para el usuario, separadas por espacios  
-		 en blanco. Corresponden al campo `opcion.id` de la base de datos y deben usarse para armar el menú de opciones.
-		 Ej. `1 2 4 6 7 8 10 13 17`
-		 3. **`cashinagents.fields`** : son 4 dígitos binarios ( Ej. `1011` ) usados para armar la pantalla correspondiente al
-		 servicio *CASHINAGNT*. En orden estricto determinan la presencia ( `1` ) o no ( `0` ) de los campos:
-			  1. Teléfono del beneficiario.
-			  2. Identificación del beneficiario.
-			  3. Teléfono del remitente.
-			  4. Identificación del remitente.
-		 4. **`receipt.version`** : número de versión de las plantillas para impresión de recibos. En caso de que el dispositivo  
-		 no tenga almacenadas las plantillas, o que las versiones no coincidan, deberá descargar la nueva versión usando el método
-		 `getTemplates`, en "background" para evitar retrasos innecesarios en la IU.
-		 5. **`graphic.print`** : `true / false` - estrictamente para los dispositivos MP2. Determina el modo de impresión
-		 gráfico en caso de `true`.
-		 6. **`agente`** : nombre completo del agente
-    * `1|comentario`  
-	  En este caso la respuesta **`1`** indica que no fue exitoso el `login`. El campo `comentario` describe la circunstancia
-	  (credenciales erróneas, dispositivo no autorizado, etc) y las posibles acciones a seguir.
