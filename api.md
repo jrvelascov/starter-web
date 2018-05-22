@@ -99,31 +99,6 @@ Dependiendo del número mínimo de llamadas necesario para una culminación exit
 La transacción permanece en vigencia hasta la siguiente llamada a `nextId`; debido a esto, se debe tener mucho cuidado de iniciar
 la transacción únicamente como se muestra en la tabla siguiente:
 
-Método invocado|Llamar `nextId` previamente
-------|:---------:
-getSession|**NO**
-login|**NO**
-getTemplates|**NO**
-changePin|SI
-getAccount|SI
-autoRegister|SI
-getLastTransactions|SI
-getReceiptCopy|SI
-getBalance|SI
-getAgentStatement|SI
-viewBillers|SI
-getTransactionStatus|**NO**
-confirm|**NO**
-automaticReversal|**NO**
-cashin|SI
-cashinothers|SI
-cashinagents|SI
-agentSendMoney|SI
-creditDebit|SI
-payBill|SI
-merchantPayment|SI
-cashout|SI
-
 En la descripción detallada de los métodos, presentada a continuación, se indicará cuando debe llamarse previamente a `nextId`.
 
 
