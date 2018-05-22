@@ -1,10 +1,3 @@
-# Este documento
-
->>>> _**Documento**: API Provisioning (api_provisioning.md)_  
-     _**Versión**: 0.5.0_
-
->>>> _**BASE-URL**: http://192.168.128.216:8080/mfsjava_
-
 # Provisioning
 
 Provisioning es una aplicación java EE7 cuya misión básica es intermediar e integrar los webservices Tigo Money para
