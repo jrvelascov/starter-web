@@ -531,5 +531,3 @@ Para acceder a los métodos declarados en este grupo se requiere hacerlo desde u
 del archivo *tigo.properties*.
 
 Los requests de este grupo NO deben tener el encabezado HTTP **`imei=valor_del_imei`**
-
-22392502 17/03/49
